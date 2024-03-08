@@ -1,8 +1,11 @@
 package student.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import org.w3c.dom.ElementTraversal;
 
@@ -19,6 +22,21 @@ public void saveStudent(Student student) {
 	entityTransaction.begin();
 	entityManager.persist(student);
 	entityTransaction.commit();
+}
+
+public List<Student> getAllStudents() {
+	EntityManager entityManager=getEntityManager();
+	Query query=entityManager.createQuery("Select s from Student s");
+	return query.getResultList();
+}
+
+public Student getStudentByEmail(String email) {
+	EntityManager entityManager=getEntityManager();
+	Query query=entityManager.createQuery("Select s from Student s where s.email=?1");
+	query.setParameter(1, email);
+	 Student student=(Student) query.getSingleResult();
+	 return student;
+	
 }
 
 }
